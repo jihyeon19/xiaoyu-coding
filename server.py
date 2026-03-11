@@ -123,6 +123,14 @@ class Handler(SimpleHTTPRequestHandler):
 if __name__ == "__main__":
     host = os.environ.get("HOST", "127.0.0.1")
     port = int(os.environ.get("PORT", "8000"))
-    server = ThreadingHTTPServer((host, port), Handler)
+    try:
+        server = ThreadingHTTPServer((host, port), Handler)
+    except OSError as e:
+        print(f"[ERROR] Failed to start server on http://{host}:{port}")
+        print(f"[ERROR] {e}")
+        print("Tip: the port may already be in use. Try another port, e.g. 8010.")
+        raise SystemExit(1)
+
     print(f"Serving on http://{host}:{port}")
+    print(f"Open: http://{host}:{port}/preview.html")
     server.serve_forever()

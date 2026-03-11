@@ -56,6 +56,10 @@ run_local_windows.bat 8010
 
 ## C. 常见报错（你可以直接对照）
 
+最常见原因只有 2 个：
+1) **服务器没启动成功**（Python 没装好或没加 PATH）
+2) **你开的网址和端口不一致**（比如启动的是 8010，却访问 8000）
+
 ### 报错 1：`python 不是内部或外部命令`
 说明 Python 没装好，或者没勾选 PATH。重新安装 Python 并勾选 `Add Python to PATH`。
 
