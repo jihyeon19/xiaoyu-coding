@@ -13,21 +13,8 @@ function t(key) {
 }
 
 function loadProfile() {
-  try {
-    const saved = localStorage.getItem(PROFILE_KEY);
-    if (saved) userProfile = { ...userProfile, ...JSON.parse(saved) };
-  } catch (e) {
-    console.warn("Failed to load local profile:", e);
-  }
-}
-
-function escapeHtml(value) {
-  return String(value || "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/\"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+  const saved = localStorage.getItem(PROFILE_KEY);
+  if (saved) userProfile = { ...userProfile, ...JSON.parse(saved) };
 }
 
 function saveProfile() {
@@ -39,13 +26,8 @@ function saveProfile() {
     idea: document.getElementById("pfIdea").value.trim(),
     focus: "전공 선택 + 교환/대학원 전략 + 창업 MVP"
   };
-  try {
-    localStorage.setItem(PROFILE_KEY, JSON.stringify(userProfile));
-  } catch (e) {
-    console.warn("Failed to save profile:", e);
-  }
+  localStorage.setItem(PROFILE_KEY, JSON.stringify(userProfile));
   renderProfile();
-  bindProfileForm();
 }
 
 function bindProfileForm() {
@@ -61,13 +43,8 @@ function renderStaticText() {
 }
 
 function renderProfile() {
-  const name = escapeHtml(userProfile.name || "Unknown");
-  const nationality = escapeHtml(userProfile.nationality || "-");
-  const situation = escapeHtml(userProfile.situation || "-");
-  const target = escapeHtml(userProfile.target || "-");
-  const idea = escapeHtml(userProfile.idea || "-");
   document.getElementById("profileCard").innerHTML = `
-    <div class="card"><strong>${name}</strong><br/>국적: ${nationality}<br/>상황: ${situation}<br/>목표: ${target}<br/>아이디어: ${idea}</div>
+    <div class="card"><strong>${userProfile.name || "Unknown"}</strong><br/>국적: ${userProfile.nationality || "-"}<br/>상황: ${userProfile.situation || "-"}<br/>목표: ${userProfile.target || "-"}<br/>아이디어: ${userProfile.idea || "-"}</div>
     <div class="card"><span class="tag" data-term="MVP">MVP</span><span class="tag" data-term="PMF">PMF</span><span class="tag" data-term="Credit Transfer">Credit Transfer</span></div>
   `;
 }
@@ -173,33 +150,18 @@ async function generateDoc() {
   const type = document.getElementById("docType").value;
   const keyword = document.getElementById("docInput").value.trim() || userProfile.idea || "robotics";
   const output = document.getElementById("docOutput");
-  output.textContent = "Gemini로 초안을 생성 중입니다...";
-  try {
-    const r = await fetch("/api/generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        docType: type,
-        keyword,
-        language: currentLang,
-        profile: userProfile
-      })
-    });
-
+  if (type === "full") {
+    const r = await fetch(`/api/plan?q=${encodeURIComponent(keyword)}`);
     const data = await r.json();
-    if (!r.ok || !data.ok) {
-      output.textContent = `생성 실패: ${data.error || "Unknown error"}`;
-      return;
-    }
-
-    if (type === "full") {
-      output.textContent = `${data.ko || ""}\n\n${data.zh || ""}`.trim();
-      return;
-    }
-    output.textContent = data.text || "내용이 비어 있습니다.";
-  } catch (err) {
-    output.textContent = `생성 실패: ${err.message}`;
+    output.textContent = `${data.ko}\n\n${data.zh}`;
+    return;
   }
+  const sample = {
+    study: `학업계획서 초안\n- 목표: 글로벌 교환+창업 실행형 인재\n- 키워드: ${keyword}`,
+    intro: `자기소개서 초안\n저는 실행 중심으로 교환/연구/창업을 연결해 성과를 만드는 학생입니다.\n핵심 분야: ${keyword}`,
+    email: `메일 초안\n안녕하세요 교수님, 저는 ${userProfile.name || "지원자"}입니다.\n${keyword} 관련 협업 미팅을 요청드립니다.`
+  };
+  output.textContent = sample[type];
 }
 
 function setupEvents() {

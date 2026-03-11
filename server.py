@@ -59,66 +59,6 @@ def build_plan_zh(user_input: str) -> str:
 """
 
 
-def call_gemini(prompt: str) -> str:
-    api_key = os.environ.get("GEMINI_API_KEY", "").strip()
-    if not api_key:
-        raise RuntimeError("GEMINI_API_KEY is missing")
-
-    url = (
-        "https://generativelanguage.googleapis.com/v1beta/models/"
-        "gemini-1.5-flash:generateContent"
-        f"?key={api_key}"
-    )
-    payload = {
-        "contents": [{"role": "user", "parts": [{"text": prompt}]}],
-        "generationConfig": {"temperature": 0.7, "maxOutputTokens": 1200},
-    }
-    req = Request(
-        url,
-        data=json.dumps(payload).encode("utf-8"),
-        headers={"Content-Type": "application/json"},
-        method="POST",
-    )
-    with urlopen(req, timeout=30) as resp:
-        body = json.loads(resp.read().decode("utf-8", errors="ignore"))
-
-    try:
-        return body["candidates"][0]["content"]["parts"][0]["text"].strip()
-    except Exception:
-        raise RuntimeError(f"Invalid Gemini response: {body}")
-
-
-def build_generation_prompt(doc_type: str, keyword: str, language: str, profile: dict) -> str:
-    name = profile.get("name", "지원자")
-    nationality = profile.get("nationality", "")
-    situation = profile.get("situation", "")
-    target = profile.get("target", "")
-    idea = profile.get("idea", "")
-
-    if doc_type == "full":
-        return (
-            "You are an elite admissions + startup mentor.\n"
-            "Write TWO complete documents with practical steps and measurable milestones.\n"
-            "Output format:\n"
-            "[KO]\n...\n\n[ZH]\n...\n"
-            "Each version must include: 지원동기/动机, 학년별 계획, 교환/대학원 전략, 창업 MVP 로드맵,\n"
-            "성과지표(KPI), 교수/연구실 접근 전략, 2026-2034 타임라인.\n"
-            f"Profile: name={name}, nationality={nationality}, situation={situation}, target={target}, idea={idea}\n"
-            f"Keywords: {keyword}"
-        )
-
-    target_lang = {"ko": "Korean", "zh": "Chinese", "en": "English"}.get(language, "Korean")
-    doc_label = {"study": "study plan", "intro": "self introduction", "email": "professor outreach email"}.get(doc_type, "document")
-    return (
-        "You are an expert writer for university admissions and startup planning.\n"
-        f"Write a high-quality {doc_label} in {target_lang}.\n"
-        "Must be concrete, structured, and actionable.\n"
-        "Include: goal, concrete steps, timeline, and next action in the coming 7 days.\n"
-        f"Profile: name={name}, nationality={nationality}, situation={situation}, target={target}, idea={idea}\n"
-        f"Keywords: {keyword}"
-    )
-
-
 class Handler(SimpleHTTPRequestHandler):
     def _json(self, payload, code=200):
         b = json.dumps(payload, ensure_ascii=False).encode("utf-8")
@@ -174,48 +114,10 @@ class Handler(SimpleHTTPRequestHandler):
 
         if parsed.path == "/api/plan":
             q = query.get("q", [""])[0]
-            try:
-                prompt = build_generation_prompt("full", q, "ko", {})
-                text = call_gemini(prompt)
-                ko = text
-                zh = ""
-                if "[KO]" in text and "[ZH]" in text:
-                    ko = text.split("[KO]", 1)[1].split("[ZH]", 1)[0].strip()
-                    zh = text.split("[ZH]", 1)[1].strip()
-                return self._json({"ok": True, "ko": ko, "zh": zh})
-            except Exception:
-                return self._json({"ok": True, "ko": build_plan_ko(q), "zh": build_plan_zh(q), "fallback": True})
+            return self._json({"ko": build_plan_ko(q), "zh": build_plan_zh(q)})
 
         self._rewrite_spa_path()
         return super().do_GET()
-
-    def do_POST(self):
-        parsed = urlparse(self.path)
-        if parsed.path != "/api/generate":
-            self.send_error(404)
-            return
-
-        try:
-            length = int(self.headers.get("Content-Length", "0"))
-            payload = json.loads(self.rfile.read(length).decode("utf-8")) if length > 0 else {}
-            doc_type = payload.get("docType", "study")
-            keyword = payload.get("keyword", "")
-            language = payload.get("language", "ko")
-            profile = payload.get("profile", {})
-            prompt = build_generation_prompt(doc_type, keyword, language, profile)
-            text = call_gemini(prompt)
-
-            if doc_type == "full":
-                ko = text
-                zh = ""
-                if "[KO]" in text and "[ZH]" in text:
-                    ko = text.split("[KO]", 1)[1].split("[ZH]", 1)[0].strip()
-                    zh = text.split("[ZH]", 1)[1].strip()
-                return self._json({"ok": True, "ko": ko, "zh": zh, "raw": text})
-
-            return self._json({"ok": True, "text": text})
-        except Exception as e:
-            return self._json({"ok": False, "error": str(e)}, code=500)
 
 
 if __name__ == "__main__":
