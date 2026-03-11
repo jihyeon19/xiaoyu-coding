@@ -1,0 +1,48 @@
+:root {
+  --bg1: #150f24;
+  --bg2: #3a1f4d;
+  --glass: rgba(255,255,255,.12);
+  --line: rgba(255,255,255,.22);
+  --text: #fff7fd;
+  --muted: #e8ddef;
+  --pink: #ff8fcf;
+  --violet: #ae8bff;
+  --btn: #7f5dff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Noto Sans KR", "Noto Sans SC", Inter, system-ui, sans-serif;
+  background: radial-gradient(circle at 20% 20%, #ffb8df33, transparent 30%), linear-gradient(160deg, var(--bg1), var(--bg2));
+  color: var(--text);
+  position: relative;
+}
+.bg-glow { position: fixed; inset: -20%; background: radial-gradient(circle at 80% 10%, #b08bff40, transparent 35%); pointer-events:none; }
+.glass { backdrop-filter: blur(10px); background: var(--glass); border: 1px solid var(--line); border-radius: 18px; }
+.topbar { margin: 14px; padding: 14px 16px; display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+.brand-kicker { margin: 0; font-size: 11px; letter-spacing: .12em; color: var(--pink); }
+h1 { margin: 4px 0 0; font-size: 28px; }
+.toolbar { display: flex; gap: 10px; align-items: center; }
+.lang-switch { display:flex; gap: 6px; }
+.layout { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit,minmax(300px,1fr)); padding: 0 14px 14px; }
+.panel { padding: 14px; }
+.stack label { display:block; margin: 8px 0; }
+label span { display:block; font-size: 13px; margin-bottom: 5px; color: var(--muted); }
+input, select, button {
+  width: 100%; border-radius: 12px; border: 1px solid #ffffff45; background: #0f0a1f7d; color: var(--text); padding: 10px;
+}
+button { cursor: pointer; background: linear-gradient(180deg, var(--btn), #5f41cf); font-weight: 600; }
+.row { display:grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.row.triple { grid-template-columns: repeat(3,1fr); margin-top: 8px; }
+.muted { color: var(--muted); }
+.tiny { font-size: 12px; opacity: .9; }
+.step-box { min-height: 90px; border: 1px dashed #ffd1f6aa; border-radius: 14px; padding: 11px; margin-bottom: 10px; background: #0f0920ab; }
+.coach { color: #ffd0ee; font-weight: 600; margin: 0 0 8px; }
+.metrics { margin: 0 0 10px; padding-left: 18px; }
+.metrics li { margin: 6px 0; }
+.chips { display:flex; gap:8px; flex-wrap:wrap; }
+.chip { padding: 6px 10px; border:1px solid #ffffff4f; border-radius: 999px; background: #ffffff22; font-size: 12px; }
+.timeline, .log { margin-top: 8px; max-height: 180px; overflow:auto; display:flex; flex-direction:column; gap:6px; }
+.item { font-size: 13px; padding: 8px; border-radius: 10px; background: #ffffff12; border:1px solid #ffffff29; }
+.footer { padding: 0 14px 16px; font-size: 12px; }

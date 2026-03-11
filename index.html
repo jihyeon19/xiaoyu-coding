@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Otome Live Quest</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="bg-glow"></div>
+    <header class="topbar glass">
+      <div>
+        <p class="brand-kicker">OTOME LIVE QUEST</p>
+        <h1 id="app-title">나의 성장 게임</h1>
+      </div>
+      <div class="toolbar">
+        <div class="lang-switch">
+          <button data-lang="ko">한국어</button>
+          <button data-lang="zh">中文</button>
+          <button data-lang="en">EN</button>
+        </div>
+        <select id="persona">
+          <option value="gentle">Gentle Guardian</option>
+          <option value="leader">Confident Leader</option>
+          <option value="mentor">Elegant Mentor</option>
+        </select>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel glass">
+        <h2 id="status-title">오늘의 상태</h2>
+        <div class="stats">
+          <div>Day <strong id="day">1</strong></div>
+          <div>XP <strong id="xp">0</strong></div>
+          <div>Energy <strong id="energy">100</strong></div>
+          <div>Affinity <strong id="affinity">0</strong></div>
+        </div>
+        <div class="row">
+          <button id="btn-new-day">새로운 하루 시작</button>
+          <button id="btn-reset">리셋</button>
+        </div>
+        <p class="tiny" id="status-note">매일 3개 퀘스트를 완료하면 성장 레벨이 오릅니다.</p>
+      </section>
+
+      <section class="panel glass">
+        <h2 id="env-title">환경 체크</h2>
+        <form id="env-form" class="stack">
+          <label><span id="label-location">지금 위치</span><input id="location" placeholder="집 / 학교 / 회사" required /></label>
+          <label><span id="label-tools">도구/제품</span><input id="tools" placeholder="샴푸, 수건, 드라이기" required /></label>
+          <label><span id="label-time">가능 시간(분)</span><input id="minutes" type="number" min="3" value="12" required /></label>
+          <label><span id="label-goal">오늘 목표</span>
+            <select id="goal">
+              <option value="hair">헤어 케어</option>
+              <option value="skin">스킨 케어</option>
+              <option value="fitness">체형/운동</option>
+              <option value="study">학습 집중</option>
+            </select>
+          </label>
+          <div class="row">
+            <button type="submit" id="build-plan">퀘스트 생성</button>
+            <button type="button" id="enable-notify">알림 허용</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel glass">
+        <h2 id="task-title">Zero-Brain 단일 스텝</h2>
+        <div id="step-box" class="step-box">퀘스트를 생성하면 Step 1부터 시작돼요.</div>
+        <p class="coach" id="coach-line">오늘도 한 걸음, 내가 옆에서 볼게요 ✨</p>
+        <div class="row triple">
+          <button id="btn-complete">완료</button>
+          <button id="btn-stuck">막힘</button>
+          <button id="btn-skip">건너뛰기</button>
+        </div>
+        <div class="timeline" id="timeline"></div>
+      </section>
+
+      <section class="panel glass">
+        <h2 id="quest-title">오늘의 퀘스트</h2>
+        <div id="quest-list" class="log"></div>
+      </section>
+
+      <section class="panel glass">
+        <h2 id="log-title">감독 로그</h2>
+        <div id="log" class="log"></div>
+      </section>
+    </main>
+
+    <footer class="footer muted">
+      <span id="footer-note">Run: ./scripts/start.sh → open localhost:4173</span>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
