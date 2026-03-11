@@ -1,0 +1,9 @@
+{
+  "cleanUrls": false,
+  "trailingSlash": true,
+  "rewrites": [
+    { "source": "/preview", "destination": "/preview.html" },
+    { "source": "/preview/:path*", "destination": "/preview.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
