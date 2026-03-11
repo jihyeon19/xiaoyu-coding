@@ -1,0 +1,64 @@
+{
+  "courses": {
+    "mechanical_engineering": [
+      {"code":"ME201","name_ko":"정역학","name_en":"Statics","type":"Core","skills":["Engineering Mechanics","Modeling"]},
+      {"code":"ME301","name_ko":"동역학","name_en":"Dynamics","type":"Core","skills":["Motion Analysis","Control Basics"]},
+      {"code":"ME351","name_ko":"제어공학","name_en":"Control Engineering","type":"Core","skills":["Feedback Control","System Design"]},
+      {"code":"ME381","name_ko":"메카트로닉스","name_en":"Mechatronics","type":"Core","skills":["Embedded","Sensors","Actuators"]},
+      {"code":"ME4XX","name_ko":"기계공학캡스톤디자인","name_en":"Capstone Design in Mechanical Engineering","type":"Project","skills":["MVP Build","Prototype Validation"]}
+    ],
+    "self_designed_major": [
+      {"code":"SD101","name_ko":"자유전공세미나","name_en":"Self-Designed Major Seminar","type":"Foundation","skills":["Roadmap Design","Academic Writing"]},
+      {"code":"CS101","name_ko":"컴퓨터프로그래밍입문","name_en":"Intro to Programming","type":"Elective","skills":["Python","Data Processing"]},
+      {"code":"IE2XX","name_ko":"데이터기반의사결정","name_en":"Data-Driven Decision Making","type":"Elective","skills":["Analytics","Experiment Design"]},
+      {"code":"BA2XX","name_ko":"기술창업개론","name_en":"Technology Entrepreneurship","type":"Elective","skills":["Business Model","PMF"]}
+    ]
+  },
+  "professors": [
+    {
+      "name":"Prof. Jun-Ho Lee",
+      "department":"Mechanical Engineering",
+      "focus":"Robotics, HRI, Motion Control",
+      "papers":[
+        {"year":2025,"title":"Human-Centered Motion Planning for Assistive Robots","summary":"Adaptive planning framework for safe and expressive robot motion."},
+        {"year":2024,"title":"A Soft-Actuated Bionic Joint for Desktop Interaction Devices","summary":"Soft actuator design for low-cost human interaction hardware."},
+        {"year":2023,"title":"Sensor Fusion Pipeline for Fine-Grained Movement Recognition","summary":"Combines IMU and vision for robust movement decoding."},
+        {"year":2022,"title":"Interactive Emotional Behaviors in Social Robots","summary":"Designs emotional state transitions in social interaction robots."},
+        {"year":2021,"title":"Control-Oriented Learning for Animation-to-Robot Transfer","summary":"Maps animation trajectories to constrained robot control signals."}
+      ]
+    },
+    {
+      "name":"Prof. Min-Seo Park",
+      "department":"Interdisciplinary Program",
+      "focus":"AI Product Systems, NLP, Learning Platforms",
+      "papers":[
+        {"year":2025,"title":"Task Decomposition Agents for Daily Productivity","summary":"NLP task decomposition tied to measurable execution steps."},
+        {"year":2024,"title":"Memory-Aware Reading Assistant for STEM Students","summary":"Summarization plus spaced-repetition reinforcement."},
+        {"year":2023,"title":"Cross-Lingual Personal Planning Systems","summary":"Planning model supporting Korean-Chinese-English users."},
+        {"year":2022,"title":"Explainable Goal-Tracking Recommenders","summary":"Recommendation engine with interpretable progress logic."},
+        {"year":2021,"title":"Template-Driven Interactive Notebook Architectures","summary":"Composable UI templates for creative productivity apps."}
+      ]
+    }
+  ],
+  "universities": [
+    {"name":"Korea University","country":"South Korea","city":"Seoul","tracks":["undergraduate","graduate","exchange"],"focus":["Mechanical Engineering","Interdisciplinary Studies"],"why_fit":"Strong robotics/control ecosystem and Korea network."},
+    {"name":"Pusan National University","country":"South Korea","city":"Busan","tracks":["undergraduate","graduate","exchange"],"focus":["Mechanical Engineering","Smart Manufacturing"],"why_fit":"Major national university with engineering depth and Busan startup links."},
+    {"name":"Seoul National University","country":"South Korea","city":"Seoul","tracks":["undergraduate","graduate","exchange"],"focus":["Mechanical Engineering","AI","Robotics"],"why_fit":"Top-tier research intensity and broad lab options."},
+    {"name":"Yonsei University","country":"South Korea","city":"Seoul","tracks":["undergraduate","graduate","exchange"],"focus":["Engineering","Entrepreneurship"],"why_fit":"Strong global collaboration and startup programs."},
+    {"name":"Hanyang University","country":"South Korea","city":"Seoul","tracks":["undergraduate","graduate","exchange"],"focus":["Engineering","Industry Collaboration"],"why_fit":"Known for practical engineering and industry projects."},
+    {"name":"MIT","country":"USA","city":"Cambridge","tracks":["graduate","exchange"],"focus":["Robotics","AI","Entrepreneurship"],"why_fit":"World-leading robotics labs and startup ecosystem."},
+    {"name":"Stanford University","country":"USA","city":"Stanford","tracks":["graduate","exchange"],"focus":["AI","HCI","Venture"],"why_fit":"Silicon Valley network for product and fundraising."},
+    {"name":"Carnegie Mellon University","country":"USA","city":"Pittsburgh","tracks":["graduate","exchange"],"focus":["Robotics","Computer Science"],"why_fit":"Exceptional robotics institute and interdisciplinary options."},
+    {"name":"University of Oxford","country":"UK","city":"Oxford","tracks":["graduate","exchange"],"focus":["Engineering Science","AI"],"why_fit":"Strong research mentoring and global academic reputation."},
+    {"name":"University of Cambridge","country":"UK","city":"Cambridge","tracks":["graduate","exchange"],"focus":["Engineering","Control","Innovation"],"why_fit":"Deep engineering tradition plus commercialization pathways."},
+    {"name":"ETH Zurich","country":"Switzerland","city":"Zurich","tracks":["graduate","exchange"],"focus":["Robotics","Mechanical Engineering"],"why_fit":"Top European technical school for robotics and systems."},
+    {"name":"National University of Singapore","country":"Singapore","city":"Singapore","tracks":["undergraduate","graduate","exchange"],"focus":["Engineering","AI","Innovation"],"why_fit":"Asia hub with strong tech commercialization pipeline."},
+    {"name":"Tsinghua University","country":"China","city":"Beijing","tracks":["graduate","exchange"],"focus":["Mechanical Engineering","AI"],"why_fit":"Leading engineering resources and industry ties."},
+    {"name":"University of Tokyo","country":"Japan","city":"Tokyo","tracks":["graduate","exchange"],"focus":["Mechanical Systems","Robotics"],"why_fit":"Strong robotics labs and East Asia collaboration."}
+  ],
+  "sources": [
+    "Korea University curriculum pages (to be connected by crawler)",
+    "Department/lab publication pages (to be connected by crawler)",
+    "Global university official admissions and exchange pages (to be connected by crawler)"
+  ]
+}

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Global Startup Compass</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1 id="appTitle">Global Startup Compass</h1>
+      <div class="controls">
+        <label for="langSelect" id="langLabel">언어</label>
+        <select id="langSelect">
+          <option value="ko">한국어</option>
+          <option value="zh">中文</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="panel left">
+        <h2 data-i18n="profileTitle">사용자 프로필</h2>
+        <p class="mini">🔒 이 프로필은 현재 브라우저 localStorage에만 저장됩니다(본인만 볼 수 있음).</p>
+        <div id="profileCard"></div>
+
+        <div class="card">
+          <label>이름</label><input id="pfName" />
+          <label>국적</label><input id="pfNation" />
+          <label>현재 상황</label><input id="pfSituation" />
+          <label>목표 대학/트랙</label><input id="pfTarget" />
+          <label>창업 아이디어</label><textarea id="pfIdea" rows="4"></textarea>
+          <button id="saveProfileBtn">내 프로필 저장</button>
+        </div>
+
+        <h3 data-i18n="wizardTitle">단계별 계획</h3>
+        <ol id="wizardSteps"></ol>
+      </aside>
+
+      <section class="panel center">
+        <h2 data-i18n="mvpTitle">학업·창업 통합 플래너</h2>
+        <div class="api-tools card">
+          <label>전공 선택</label>
+          <select id="majorSelect">
+            <option value="mechanical_engineering">고려대 기계공학</option>
+            <option value="self_designed_major">고려대 자유전공</option>
+          </select>
+          <button id="loadCoursesBtn">교과목 가져오기</button>
+          <button id="loadProfBtn">교수/논문 가져오기</button>
+
+          <label>학교 탐색 (本科/研究生/交换)</label>
+          <select id="trackSelect">
+            <option value="undergraduate">학부 / 本科</option>
+            <option value="graduate">대학원 / 研究生</option>
+            <option value="exchange">교환 / 交换</option>
+          </select>
+          <button id="loadUnivBtn">글로벌 대학 목록 가져오기</button>
+
+          <label>교환 인텔리전스 대학 선택</label>
+          <select id="intelUniversitySelect"></select>
+          <button id="openIntelBtn">교환 세부 로드맵 보기</button>
+
+          <label>실시간 크롤링 URL(선택)</label>
+          <input id="liveUrl" placeholder="https://... (차단 시 시드 데이터 사용)" />
+        </div>
+
+        <div class="card">
+          <h3>🚀 创业 MVP 实验室 / 창업 MVP 실험실</h3>
+          <label>选择MVP类型</label>
+          <select id="mvpType">
+            <option value="idea2action">Idea2Action（想法拆解）</option>
+            <option value="task_ai">AI Task Supervisor（任务监督）</option>
+            <option value="email_pack">Outreach Pack（联络邮件包）</option>
+          </select>
+          <label>输入你的创业想法</label>
+          <textarea id="mvpInput" rows="4" placeholder="例如：机器人桌面互动设备 + AI学习陪伴"></textarea>
+          <button id="runMvpBtn">运行 MVP</button>
+          <pre id="mvpOutput"></pre>
+        </div>
+
+        <div class="tabs" id="mainTabs"></div>
+        <article id="tabContent" class="content"></article>
+      </section>
+
+      <aside class="panel right">
+        <h2 data-i18n="writerTitle">문서 작성기</h2>
+        <label for="docType" data-i18n="docType">문서 종류</label>
+        <select id="docType">
+          <option value="study">학업계획서</option>
+          <option value="intro">자기소개서</option>
+          <option value="email">교수/선배 연락 메일</option>
+          <option value="full">정식 학업계획서(한/중)</option>
+        </select>
+
+        <label for="docInput" data-i18n="docInput">핵심 키워드 입력</label>
+        <textarea id="docInput" rows="7" placeholder="예: 기계공학, 로보틱스, 창업, 고려대"></textarea>
+
+        <button id="generateBtn" data-i18n="generateBtn">초안 생성</button>
+        <pre id="docOutput"></pre>
+      </aside>
+    </main>
+
+    <footer>
+      <p data-i18n="footer">글로벌 대학 + KU/PNU 포함. API로 확장 가능한 MVP.</p>
+    </footer>
+
+    <div id="termModal" class="modal hidden">
+      <div class="modal-box">
+        <h3 id="termTitle"></h3>
+        <p id="termBody"></p>
+        <button id="closeTerm">닫기</button>
+      </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
