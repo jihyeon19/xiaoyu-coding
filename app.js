@@ -15,6 +15,8 @@ Object.assign(state, {
   idx: state.idx || 0,
   quests: state.quests || [],
   logs: state.logs || [],
+  profile: state.profile || { name: '', stage: '', target: '' },
+  latestDraft: state.latestDraft || '',
 });
 
 const $ = (s) => document.querySelector(s);
@@ -45,6 +47,34 @@ function renderTop() {
   $('#affinity').textContent = state.affinity;
   document.documentElement.lang = state.lang;
   document.title = I18N[state.lang].title;
+}
+
+function renderProfile() {
+  $('#profile-name').value = state.profile.name || '';
+  $('#profile-stage').value = state.profile.stage || '';
+  $('#profile-target').value = state.profile.target || '';
+
+  const preview = $('#profile-preview');
+  if (!state.profile.name && !state.profile.stage && !state.profile.target) {
+    preview.textContent = '暂无简介，保存后会显示在这里。';
+  } else {
+    preview.innerHTML = [
+      `<strong>姓名：</strong>${state.profile.name || '-'}`,
+      `<strong>阶段：</strong>${state.profile.stage || '-'}`,
+      `<strong>目标：</strong>${state.profile.target || '-'}`,
+    ].join('<br/>');
+  }
+
+  if (state.latestDraft) {
+    $('#draft-output').innerHTML = `<div class="item" style="white-space:pre-wrap">${escapeHtml(state.latestDraft)}</div>`;
+  }
+}
+
+function escapeHtml(str) {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
 }
 
 function renderQuests() {
@@ -85,6 +115,56 @@ function personaSpeak(type='gentle') {
   const lines = personaLines[type] || personaLines.gentle;
   $('#coach-line').textContent = lines[Math.floor(Math.random()*lines.length)];
 }
+
+$('#profile-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  state.profile = {
+    name: $('#profile-name').value.trim(),
+    stage: $('#profile-stage').value.trim(),
+    target: $('#profile-target').value.trim(),
+  };
+  save();
+  renderProfile();
+  pushLog('Profile saved');
+});
+
+$('#generate-draft').addEventListener('click', async () => {
+  const profileText = [
+    `姓名:${$('#profile-name').value.trim() || state.profile.name || ''}`,
+    `阶段:${$('#profile-stage').value.trim() || state.profile.stage || ''}`,
+    `目标:${$('#profile-target').value.trim() || state.profile.target || ''}`,
+  ].join('；');
+  const direction = $('#draft-direction').value;
+
+  if (!profileText.replace(/[；:姓名阶段目标]/g, '').trim()) {
+    $('#draft-output').innerHTML = '<div class="item">请先填写并保存“使用者简介”。</div>';
+    return;
+  }
+
+  $('#draft-output').innerHTML = '<div class="item">Gemini 生成中，请稍候...</div>';
+  pushLog(`Draft generation started (${direction})`);
+
+  try {
+    const resp = await fetch('/api/generate-draft', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ profile: profileText, direction }),
+    });
+    const data = await resp.json();
+
+    if (!resp.ok) {
+      throw new Error(data?.error || 'Draft generation failed');
+    }
+
+    state.latestDraft = data.draft;
+    save();
+    renderProfile();
+    pushLog('Draft generated via Gemini');
+  } catch (err) {
+    $('#draft-output').innerHTML = `<div class="item">生成失败：${escapeHtml(err.message || '未知错误')}</div>`;
+    pushLog(`Draft generation failed: ${err.message}`);
+  }
+});
 
 $('#env-form').addEventListener('submit', (e)=>{
   e.preventDefault();
@@ -156,5 +236,6 @@ $('#enable-notify').addEventListener('click', async ()=>{
 renderTop();
 renderQuests();
 renderLogs();
+renderProfile();
 showStep();
 personaSpeak($('#persona').value);

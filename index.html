@@ -44,6 +44,33 @@
       </section>
 
       <section class="panel glass">
+        <h2>使用者简介</h2>
+        <form id="profile-form" class="stack">
+          <label><span>姓名</span><input id="profile-name" placeholder="例如：小雨" /></label>
+          <label><span>当前阶段</span><input id="profile-stage" placeholder="例如：大二 / 职场1年" /></label>
+          <label><span>核心目标</span><input id="profile-target" placeholder="例如：申请研究生 / 创业起步" /></label>
+          <label><span>方向</span>
+            <select id="draft-direction">
+              <option value="学业">学业</option>
+              <option value="创业">创业</option>
+            </select>
+          </label>
+          <div class="row">
+            <button type="submit" id="save-profile">保存简介</button>
+            <button type="button" id="generate-draft">生成初稿</button>
+          </div>
+        </form>
+        <div id="profile-preview" class="item">暂无简介，保存后会显示在这里。</div>
+      </section>
+
+      <section class="panel glass">
+        <h2>Gemini 初稿输出</h2>
+        <div id="draft-output" class="log">
+          <div class="item">点击“生成初稿”后，这里会显示 Gemini 返回的计划。</div>
+        </div>
+      </section>
+
+      <section class="panel glass">
         <h2 id="env-title">환경 체크</h2>
         <form id="env-form" class="stack">
           <label><span id="label-location">지금 위치</span><input id="location" placeholder="집 / 학교 / 회사" required /></label>
